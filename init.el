@@ -28,8 +28,13 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
-;; Remove annoying defaults
-(show-paren-mode t)
+(use-package smartparens
+  :ensure t
+  :config
+  (require 'smartparens-config)
+  (smartparens-global-mode t)
+  (show-smartparens-global-mode t))
+
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (menu-bar-mode -1)
@@ -43,8 +48,7 @@
 (setq auto-save-list-file-prefix "~/.emacs.cache/auto-save-list/.saves-")
 
 ;; Font face
-(add-to-list 'default-frame-alist '(font . "PragmataPro for Powerline-12"))
-;; (add-to-list 'default-frame-alist '(font . "Inconsolata 14"))
+(add-to-list 'default-frame-alist '(font . "Iosevka Term-14"))
 
 (require 'nginx-mode)
 
@@ -90,16 +94,6 @@
          ("C-c m" . vr/mc-mark)))
 
 (use-package visual-regexp-steroids)
-;; Theme
-;; (use-package solarized-theme
-;;   :ensure t					       
-;;   :config							       
-;;   (load-theme 'solarized-dark t)
-;;   ;; workaround broken colors in 256color terminal
-;;   (add-hook 'after-make-frame-functions
-;;             (lambda (frame)
-;;               (unless (display-graphic-p frame)
-;;                 (set-face-background 'default "unspecified-bg" frame)))))
 
 (use-package multiple-cursors
   :bind (("C-S-c C-S-c" . mc/edit-lines)
@@ -121,17 +115,6 @@
   (setq undo-tree-visualizer-timestamps t)
   (setq undo-tree-auto-save-history t)
   (setq undo-tree-history-directory-alist '((".*" . "~/.emacs.cache/undo/"))))
-
-;; whitespace
-;; (use-package whitespace
-;;   :ensure t
-;;   :config
-;;   (global-whitespace-mode t)
-;;   (setq whitespace-line-column 120)
-;;   (setq whitespace-style '(face tabs empty trailing lines-tail space-before-tab))
-;;   (add-hook 'before-save-hook
-;;             (lambda () (unless (bound-and-true-p whitespace-cleanup-mode)
-;;                     (whitespace-cleanup)))))
 
 ;; whitespace-cleanup
 (use-package whitespace-cleanup-mode
@@ -166,24 +149,15 @@
 
 ;; Make tab more powerful
 (setq tab-always-indent 'complete)
-
-;; Theme: https://github.com/hlissner/emacs-doom-themes
-(require 'doom-themes)
-;; Global settings (defaults)
-(setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-      doom-themes-enable-italic t) ; if nil, italics is universally disabled
-;; Load the theme (doom-one, doom-molokai, etc); keep in mind that each theme
-;; may have their own settings.
-(load-theme 'doom-one t)
-(doom-themes-visual-bell-config)
-(doom-themes-neotree-config)
-(doom-themes-treemacs-config)
-(doom-themes-org-config)
-
 (setq inhibit-splash-screen t)
 (setq inhibit-startup-message t)
 
-;; Always start in fullscreen with 3 buffers
-(split-window-below)
+;; Theme
+(use-package solarized-theme
+  :ensure t
+  :config
+  (load-theme 'solarized-dark t))
+
+;; Always start in fullscreen with 2 buffers
 (split-window-right)
 (toggle-frame-fullscreen)
